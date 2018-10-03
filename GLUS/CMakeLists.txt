@@ -16,6 +16,14 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	# Mac OS X
 
 	# Support only desktop
+	
+    SET(Processor "x64")
+    SET(OperatingSystem "Darwin")
+    SET(Compiler "GCC")
+
+	set(ENV_DIR ${Processor}/${OperatingSystem}/${Compiler})
+	
+	include_directories(${GLUS_SOURCE_DIR}/../External/${ENV_DIR}/include)
 
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	# Linux
@@ -41,7 +49,16 @@ ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 		
 	ELSE()
 		# Support only desktop
-					
+	
+		SET(Processor "x64")
+		SET(OperatingSystem "Linux")
+		SET(Compiler "GCC")
+		
+		set(ENV_DIR ${Processor}/${OperatingSystem}/${Compiler})
+
+		# External directories
+		include_directories(${GLUS_SOURCE_DIR}/../External/${ENV_DIR}/include)		
+		
 	ENDIF()
 	
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -72,13 +89,19 @@ ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
 	ELSE()
 		# Desktop
-			
+
+		SET(Processor "x86")
+		SET(OperatingSystem "Windows")
+		SET(Compiler "MSVC")
+		
+		set(ENV_DIR ${Processor}/${OperatingSystem}/${Compiler})
+		
+		include_directories(${GLUS_SOURCE_DIR}/../External/${ENV_DIR}/include)	
+	
 	ENDIF()
 		
 ENDIF()
-	
-include_directories(${EXTERNAL_INCLUDE_DIR})	
-		
+
 # Files only valid for desktop OpenGL
 list(APPEND ONLY_GL_C_FILES		${GLUS_SOURCE_DIR}/src/glus_window_glfw.c
 								${GLUS_SOURCE_DIR}/src/glus_programpipeline.c
@@ -160,4 +183,3 @@ ELSE()
 ENDIF()
 
 add_library(GLUS ${C_FILES} ${H_FILES})
-target_include_directories (GLUS PUBLIC ${GLUS_SOURCE_DIR}/src)
